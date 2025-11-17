@@ -11,7 +11,7 @@ describe('로또 확인자 클래스 테스트', () => {
     ];
 
     const mockWinningLotto = {
-      calculateRank: jest.fn(),
+      calculateRank: vi.fn(),
     };
 
     mockWinningLotto.calculateRank

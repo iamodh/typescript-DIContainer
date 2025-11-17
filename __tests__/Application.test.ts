@@ -21,7 +21,7 @@ const runException = async (input) => {
 
 describe('로또 테스트', () => {
   beforeEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   test('배포 버전 기능 테스트', async () => {

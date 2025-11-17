@@ -29,8 +29,8 @@ describe('당첨 로또 클래스 테스트', () => {
   test('로또의 등수를 계산한다.', () => {
     const mockLotto = {
       numbers: [1, 2, 3, 4, 5, 6],
-      matchCount: jest.fn().mockReturnValue(5),
-      contains: jest.fn().mockReturnValue(true),
+      matchCount: vi.fn().mockReturnValue(5),
+      contains: vi.fn().mockReturnValue(true),
     };
 
     const winningLotto = new WinningLotto(

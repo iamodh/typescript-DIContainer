@@ -1,30 +1,19 @@
 {
-  "name": "javascript-lotto",
+  "name": "typescript-di-container",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js",
-    "test": "jest --detectOpenHandles"
+    "build": "tsc",
+    "start": "node built/index.js",
+    "test": "vitest"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.8",
-    "@babel/preset-env": "^7.25.8",
-    "babel-jest": "^30.1.2",
-    "jest": "^30.1.2"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.9"
   },
   "dependencies": {
     "@woowacourse/mission-utils": "^2.2.0"
-  },
-  "jest": {
-    "transform": {
-      "\\.js$": "babel-jest"
-    }
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ]
   },
   "engines": {
     "npm": ">=10.8.2",
