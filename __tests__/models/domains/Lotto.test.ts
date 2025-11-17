@@ -1,5 +1,5 @@
-import LottoConfig from '../../../src/models/configs/LottoConfig';
-import Lotto from '../../../src/models/domains/Lotto';
+import LottoConfig from '../../../src/models/configs/LottoConfig.js';
+import Lotto from '../../../src/models/domains/Lotto.js';
 
 describe('로또 클래스 테스트', () => {
   let defaultLottoConfig;

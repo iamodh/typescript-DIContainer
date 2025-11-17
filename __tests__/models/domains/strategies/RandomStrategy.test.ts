@@ -1,5 +1,5 @@
-import LottoConfig from '../../../../src/models/configs/LottoConfig';
-import RandomStrategy from '../../../../src/models/domains/strategies/RandomStrategy';
+import LottoConfig from '../../../../src/models/configs/LottoConfig.js';
+import RandomStrategy from '../../../../src/models/domains/strategies/RandomStrategy.js';
 
 describe('랜덤 전략 클래스 테스트', () => {
   test('lottoConfig에서 정의한 설정에 따라 랜덤한 번호를 생성한다.', () => {

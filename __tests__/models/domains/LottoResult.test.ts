@@ -1,5 +1,5 @@
-import PrizeConfig from '../../../src/models/configs/PrizeConfig';
-import LottoResult from '../../../src/models/domains/LottoResult';
+import PrizeConfig from '../../../src/models/configs/PrizeConfig.js';
+import LottoResult from '../../../src/models/domains/LottoResult.js';
 
 describe('LottoResult 클래스 테스트', () => {
   let defaultPrizeConfig;

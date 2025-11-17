@@ -1,4 +1,4 @@
-import LottoChecker from '../../../src/models/services/LottoChecker';
+import LottoChecker from '../../../src/models/services/LottoChecker.js';
 
 describe('로또 확인자 클래스 테스트', () => {
   test('lottos와 winningLotto를 받아 stats를 계산해야 한다.', () => {

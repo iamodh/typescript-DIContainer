@@ -1,4 +1,4 @@
-import DIContainer from '../src/DIContainer';
+import DIContainer from '../src/DIContainer.js';
 
 describe('DI컨테이너 클래스 테스트', () => {
   describe('register 메서드 테스트', () => {

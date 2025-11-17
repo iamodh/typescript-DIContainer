@@ -1,5 +1,5 @@
-import LottoConfig from '../../../src/models/configs/LottoConfig';
-import WinningLotto from '../../../src/models/domains/WinningLotto';
+import LottoConfig from '../../../src/models/configs/LottoConfig.js';
+import WinningLotto from '../../../src/models/domains/WinningLotto.js';
 
 describe('당첨 로또 클래스 테스트', () => {
   let defaultLottoConfig;

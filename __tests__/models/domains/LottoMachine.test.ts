@@ -1,6 +1,6 @@
-import LottoConfig from '../../../src/models/configs/LottoConfig';
-import LottoMachine from '../../../src/models/domains/LottoMachine';
-import RandomStrategy from '../../../src/models/domains/strategies/RandomStrategy';
+import LottoConfig from '../../../src/models/configs/LottoConfig.js';
+import LottoMachine from '../../../src/models/domains/LottoMachine.js';
+import RandomStrategy from '../../../src/models/domains/strategies/RandomStrategy.js';
 
 describe('로또 머신 클래스 테스트', () => {
   test('구매 금액에 맞는 개수의 로또를 구입한다.', () => {
