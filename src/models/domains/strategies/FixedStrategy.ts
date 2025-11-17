@@ -1,6 +1,8 @@
-class FixedStrategy {
-  #numbers;
-  constructor(numbers) {
+import NumbersGenerator from './NumbersGenerator.js';
+
+class FixedStrategy implements NumbersGenerator {
+  #numbers: number[];
+  constructor(numbers: number[]) {
     this.#numbers = numbers;
   }
 

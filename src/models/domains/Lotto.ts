@@ -2,12 +2,13 @@ import {
   ERROR_MESSAGES,
   getInvalidCountMessage,
 } from '../../constants/errorMessages.js';
+import LottoConfig from '../configs/LottoConfig.js';
 
 class Lotto {
-  #lottoConfig;
-  #numbers;
+  #lottoConfig: LottoConfig;
+  #numbers: number[];
 
-  constructor(lottoConfig, numbers) {
+  constructor(lottoConfig: LottoConfig, numbers: number[]) {
     this.#lottoConfig = lottoConfig;
 
     this.#validateNumbersCount(numbers);
@@ -15,25 +16,25 @@ class Lotto {
     this.#numbers = numbers;
   }
 
-  #validateNumbersCount(numbers) {
+  #validateNumbersCount(numbers: number[]) {
     const count = this.#lottoConfig.getNumbersCount();
     if (numbers.length !== count) {
       throw new Error(getInvalidCountMessage(count));
     }
   }
 
-  #validateNumbersDuplicates(numbers) {
+  #validateNumbersDuplicates(numbers: number[]) {
     const uniqueNumbers = new Set(numbers);
     if (uniqueNumbers.size !== numbers.length) {
       throw new Error(ERROR_MESSAGES.NUMBERS_DUPLICATES);
     }
   }
 
-  contains(number) {
+  contains(number: number) {
     return this.#numbers.includes(number);
   }
 
-  matchCount(other) {
+  matchCount(other: number[]) {
     const totalCounts = this.#numbers.length + other.length;
 
     const unionCounts = new Set([...this.#numbers, ...other]).size;
@@ -42,7 +43,7 @@ class Lotto {
   }
 
   getSortedNumbers() {
-    return this.#numbers.sort((a, b) => a - b);
+    return [...this.#numbers].sort((a, b) => a - b);
   }
 }
 

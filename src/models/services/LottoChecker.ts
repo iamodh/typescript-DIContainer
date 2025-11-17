@@ -1,6 +1,10 @@
+import { Rank } from '../../types/types.js';
+import Lotto from '../domains/Lotto.js';
+import WinningLotto from '../domains/WinningLotto.js';
+
 class LottoChecker {
-  calculateStats(lottos, winningLotto) {
-    const stats = new Map([
+  calculateStats(lottos: Lotto[], winningLotto: WinningLotto) {
+    const stats = new Map<Rank, number>([
       ['FIRST', 0],
       ['SECOND', 0],
       ['THIRD', 0],

@@ -1,6 +1,6 @@
 import { MissionUtils } from '@woowacourse/mission-utils';
 
-export const mockQuestions = (inputs) => {
+export const mockQuestions = (inputs: string[]) => {
   MissionUtils.Console.readLineAsync = vi.fn();
 
   MissionUtils.Console.readLineAsync.mockImplementation(() => {
@@ -10,7 +10,7 @@ export const mockQuestions = (inputs) => {
   });
 };
 
-export const mockRandoms = (numbers) => {
+export const mockRandoms = (numbers: number[]) => {
   MissionUtils.Random.pickUniqueNumbersInRange = vi.fn();
   numbers.reduce((acc, number) => {
     return acc.mockReturnValueOnce(number);

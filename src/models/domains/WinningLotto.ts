@@ -2,13 +2,19 @@ import {
   ERROR_MESSAGES,
   getInvalidCountMessage,
 } from '../../constants/errorMessages.js';
+import LottoConfig from '../configs/LottoConfig.js';
+import Lotto from './Lotto.js';
 
 class WinningLotto {
-  #lottoConfig;
-  #numbers;
-  #bonusNumber;
+  #lottoConfig: LottoConfig;
+  #numbers: number[];
+  #bonusNumber: number;
 
-  constructor(lottoConfig, numbers, bonusNumber) {
+  constructor(
+    lottoConfig: LottoConfig,
+    numbers: number[],
+    bonusNumber: number
+  ) {
     this.#lottoConfig = lottoConfig;
 
     this.#validateNumbersCount(numbers);
@@ -19,34 +25,34 @@ class WinningLotto {
     this.#bonusNumber = bonusNumber;
   }
 
-  #validateNumbersCount(numbers) {
+  #validateNumbersCount(numbers: number[]) {
     const count = this.#lottoConfig.getNumbersCount();
     if (numbers.length !== count) {
       throw new Error(getInvalidCountMessage(count));
     }
   }
 
-  #validateNumbersDuplicates(numbers) {
+  #validateNumbersDuplicates(numbers: number[]) {
     const uniqueNumbers = new Set(numbers);
     if (uniqueNumbers.size !== numbers.length) {
       throw new Error(ERROR_MESSAGES.NUMBERS_DUPLICATES);
     }
   }
 
-  #validateBonusNumberDuplicates(numbers, bonusNumber) {
+  #validateBonusNumberDuplicates(numbers: number[], bonusNumber: number) {
     if (numbers.includes(bonusNumber)) {
       throw new Error(ERROR_MESSAGES.BONUS_NUMBER_DUPLICATES);
     }
   }
 
-  calculateRank(lotto) {
+  calculateRank(lotto: Lotto) {
     const matchCount = lotto.matchCount(this.#numbers);
     const hasBonus = lotto.contains(this.#bonusNumber);
 
     return this.#determineRank(matchCount, hasBonus);
   }
 
-  #determineRank(matchCount, hasBonus) {
+  #determineRank(matchCount: number, hasBonus: boolean) {
     if (matchCount === 6) return 'FIRST';
     if (matchCount === 5 && hasBonus) return 'SECOND';
     if (matchCount === 5) return 'THIRD';

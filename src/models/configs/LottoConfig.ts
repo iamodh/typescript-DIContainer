@@ -1,17 +1,23 @@
-class LottoConfig {
-  #config;
+interface LottoConfigOptions {
+  readonly PRICE: number;
+  readonly NUMBER_RANGE_FROM: number;
+  readonly NUMBER_RANGE_TO: number;
+  readonly NUMBERS_COUNT: number;
+}
 
-  constructor(
-    PRICE = 1000,
-    NUMBER_RANGE_FROM = 1,
-    NUMBER_RANGE_TO = 45,
-    NUMBERS_COUNT = 6
-  ) {
+const DEFAULT_LOTTO_CONFIG: LottoConfigOptions = {
+  PRICE: 1000,
+  NUMBER_RANGE_FROM: 1,
+  NUMBER_RANGE_TO: 45,
+  NUMBERS_COUNT: 6,
+};
+
+class LottoConfig {
+  readonly #config: LottoConfigOptions;
+
+  constructor() {
     this.#config = {
-      PRICE: PRICE,
-      NUMBER_RANGE_FROM: NUMBER_RANGE_FROM,
-      NUMBER_RANGE_TO: NUMBER_RANGE_TO,
-      NUMBERS_COUNT: NUMBERS_COUNT,
+      ...DEFAULT_LOTTO_CONFIG,
     };
 
     Object.freeze(this.#config);

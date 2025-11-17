@@ -1,7 +1,23 @@
-class DIContainer {
-  #services = new Map();
+type ContainerScope = 'transient' | 'singleton';
+type Constructor = new (...args: any[]) => unknown;
+type ServiceArg = string | unknown;
 
-  register(serviceName, serviceDefinition, scope = 'transient', args = []) {
+interface ServiceData {
+  serviceDefinition: Constructor;
+  scope: ContainerScope;
+  args: ServiceArg[];
+  instance: unknown | null;
+}
+
+class DIContainer {
+  #services = new Map<string, ServiceData>();
+
+  register(
+    serviceName: string,
+    serviceDefinition: Constructor,
+    scope: ContainerScope = 'transient',
+    args: ServiceArg[] = []
+  ) {
     this.#services.set(serviceName, {
       serviceDefinition,
       scope,
@@ -10,7 +26,7 @@ class DIContainer {
     });
   }
 
-  resolve(serviceName) {
+  resolve(serviceName: string) {
     const service = this.#services.get(serviceName);
 
     if (!service) {
@@ -21,7 +37,7 @@ class DIContainer {
       const resolved = [];
 
       service.args.map((arg) => {
-        if (this.#services.has(arg)) {
+        if (typeof arg === 'string' && this.#services.has(arg)) {
           resolved.push(this.resolve(arg));
         } else {
           resolved.push(arg);
@@ -35,7 +51,7 @@ class DIContainer {
       if (!service.instance) {
         const resolved = [];
         service.args.map((arg) => {
-          if (this.#services.has(arg)) {
+          if (typeof arg === 'string' && this.#services.has(arg)) {
             resolved.push(this.resolve(arg));
           } else {
             resolved.push(arg);
@@ -48,7 +64,7 @@ class DIContainer {
     }
   }
 
-  hasService(serviceName) {
+  hasService(serviceName: string) {
     return this.#services.has(serviceName);
   }
 }

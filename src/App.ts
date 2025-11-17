@@ -9,20 +9,23 @@ import RandomStrategy from './models/domains/strategies/RandomStrategy.js';
 import LottoChecker from './models/services/LottoChecker.js';
 import InputView from './views/InputView.js';
 import OutputView from './views/OutputView.js';
+import { Env } from './types/types.js';
 
 class App {
-  #container;
+  #container: DIContainer;
 
   constructor() {
     this.#container = new DIContainer();
   }
-  async run(env) {
+  async run(env: Env) {
     this.#injectDependencies(env);
-    const controller = this.#container.resolve('lottoController');
+    const controller = this.#container.resolve(
+      'lottoController'
+    ) as LottoController;
     await controller.start();
   }
 
-  #injectDependencies(env) {
+  #injectDependencies(env: Env) {
     const container = this.#container;
 
     container.register('lottoConfig', LottoConfig, 'singleton');
@@ -58,8 +61,6 @@ class App {
       'lottoMachine',
       'lottoChecker',
     ]);
-
-    const controller = container.resolve('lottoController');
   }
 }
 

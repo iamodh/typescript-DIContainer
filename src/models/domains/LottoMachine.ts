@@ -1,15 +1,17 @@
+import LottoConfig from '../configs/LottoConfig.js';
 import Lotto from './Lotto.js';
+import NumbersGenerator from './strategies/NumbersGenerator.js';
 
 class LottoMachine {
-  #lottoConfig;
-  #numbersGenerator;
-  constructor(lottoConfig, numbersGenerator) {
+  #lottoConfig: LottoConfig;
+  #numbersGenerator: NumbersGenerator;
+  constructor(lottoConfig: LottoConfig, numbersGenerator: NumbersGenerator) {
     this.#lottoConfig = lottoConfig;
     this.#numbersGenerator = numbersGenerator;
   }
 
-  execute(money) {
-    const lottos = [];
+  execute(money: number) {
+    const lottos: Lotto[] = [];
     const quantity = money / this.#lottoConfig.getPrice();
     for (let i = 0; i < quantity; i++) {
       const numbers = this.#numbersGenerator.generate();

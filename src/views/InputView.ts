@@ -4,11 +4,12 @@ import {
   getInvalidPricaMessage,
   getNumberNotInRangeMessage,
 } from '../constants/errorMessages.js';
+import LottoConfig from '../models/configs/LottoConfig.js';
 
 class InputView {
-  #lottoConfig;
+  #lottoConfig: LottoConfig;
 
-  constructor(lottoConfig) {
+  constructor(lottoConfig: LottoConfig) {
     this.#lottoConfig = lottoConfig;
   }
 
@@ -23,7 +24,9 @@ class InputView {
   }
 
   async getWinningNumbers() {
-    const input = await Console.readLineAsync('당첨 번호를 입력해 주세요.\n');
+    const input: string = await Console.readLineAsync(
+      '당첨 번호를 입력해 주세요.\n'
+    );
 
     const numbers = input.split(',').map((number) => Number(number.trim()));
 
@@ -42,13 +45,13 @@ class InputView {
     return number;
   }
 
-  #validateNumberPositive(number) {
+  #validateNumberPositive(number: unknown) {
     if (Number.isNaN(number) || !Number.isInteger(number) || number === 0) {
       throw new Error(ERROR_MESSAGES.NUMBER_NOT_POSITIVE);
     }
   }
 
-  #validateNumberInRange(number) {
+  #validateNumberInRange(number: number) {
     this.#validateNumberPositive(number);
     const from = this.#lottoConfig.getNumbersFrom();
     const to = this.#lottoConfig.getNumbersTo();
@@ -58,7 +61,7 @@ class InputView {
     }
   }
 
-  #valiadtePurchasePrice(purchasePrice) {
+  #valiadtePurchasePrice(purchasePrice: number) {
     const price = this.#lottoConfig.getPrice();
     if (purchasePrice % price !== 0) {
       throw new Error(getInvalidPricaMessage(price));

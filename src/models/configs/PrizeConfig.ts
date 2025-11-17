@@ -1,25 +1,35 @@
+import { Rank } from '../../types/types.js';
+
+interface IPrizeConfig {
+  FIRST: number;
+  SECOND: number;
+  THIRD: number;
+  FOURTH: number;
+  FIFTH: number;
+}
+
 class PrizeConfig {
-  #config;
+  #config: IPrizeConfig;
 
   constructor(
-    first = 2000000000,
-    second = 30000000,
-    third = 1500000,
-    fourth = 50000,
-    fifth = 5000
+    FIRST = 2000000000,
+    SECOND = 30000000,
+    THIRD = 1500000,
+    FOURTH = 50000,
+    FIFTH = 5000
   ) {
     this.#config = {
-      FIRST: first,
-      SECOND: second,
-      THIRD: third,
-      FOURTH: fourth,
-      FIFTH: fifth,
+      FIRST,
+      SECOND,
+      THIRD,
+      FOURTH,
+      FIFTH,
     };
 
     Object.freeze(this.#config);
   }
 
-  getPrize(rank) {
+  getPrize(rank: Rank) {
     return this.#config[rank];
   }
 }

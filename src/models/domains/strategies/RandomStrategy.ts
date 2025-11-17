@@ -1,12 +1,13 @@
 import { Random } from '@woowacourse/mission-utils';
+import LottoConfig from '../../configs/LottoConfig.js';
 
 class RandomStrategy {
-  #lottoConfig;
-  constructor(lottoConfig) {
+  #lottoConfig: LottoConfig;
+  constructor(lottoConfig: LottoConfig) {
     this.#lottoConfig = lottoConfig;
   }
 
-  generate() {
+  generate(): number[] {
     return Random.pickUniqueNumbersInRange(
       this.#lottoConfig.getNumbersFrom(),
       this.#lottoConfig.getNumbersTo(),
