@@ -10,7 +10,7 @@ export const mockQuestions = (inputs: string[]) => {
   });
 };
 
-export const mockRandoms = (numbers: number[]) => {
+export const mockRandoms = (numbers: number[][]) => {
   MissionUtils.Random.pickUniqueNumbersInRange = vi.fn();
   numbers.reduce((acc, number) => {
     return acc.mockReturnValueOnce(number);
