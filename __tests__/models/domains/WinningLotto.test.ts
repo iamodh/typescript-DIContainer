@@ -1,4 +1,5 @@
-import LottoConfig from '../../../src/models/configs/LottoConfig.js';
+import LottoConfig from '../../../src/models/services/configs/LottoConfig.js';
+import Lotto from '../../../src/models/domains/Lotto.js';
 import WinningLotto from '../../../src/models/domains/WinningLotto.js';
 
 describe('당첨 로또 클래스 테스트', () => {
@@ -38,6 +39,8 @@ describe('당첨 로또 클래스 테스트', () => {
       [1, 2, 3, 4, 5, 7],
       6
     );
-    expect(winningLotto.calculateRank(mockLotto)).toBe('SECOND');
+    expect(winningLotto.calculateRank(mockLotto as unknown as Lotto)).toBe(
+      'SECOND'
+    );
   });
 });

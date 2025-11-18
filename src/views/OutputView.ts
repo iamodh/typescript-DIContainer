@@ -1,9 +1,11 @@
 import { Console } from '@woowacourse/mission-utils';
 import WINNING_CONDITION from '../constants/winningCondition.js';
-import PrizeConfig from '../models/configs/PrizeConfig.js';
+import PrizeConfig from '../models/services/configs/PrizeConfig.js';
 import Lotto from '../models/domains/Lotto.js';
 import { WinningStatistic } from '../types/types.js';
+import { Injectable } from '../DIContainer.js';
 
+@Injectable()
 class OutputView {
   #prizeConfig: PrizeConfig;
 

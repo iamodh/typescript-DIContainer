@@ -1,4 +1,4 @@
-import LottoConfig from '../../../src/models/configs/LottoConfig.js';
+import LottoConfig from '../../../src/models/services/configs/LottoConfig.js';
 import Lotto from '../../../src/models/domains/Lotto.js';
 
 describe('로또 클래스 테스트', () => {

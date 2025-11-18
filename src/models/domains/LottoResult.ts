@@ -1,5 +1,5 @@
 import { WinningStatistic } from '../../types/types.js';
-import PrizeConfig from '../configs/PrizeConfig.js';
+import PrizeConfig from '../services/configs/PrizeConfig.js';
 
 class LottoResult {
   #prizeConfig: PrizeConfig;

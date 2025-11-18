@@ -4,7 +4,9 @@
     "allowJs": true,
     "target": "esnext",
     "module": "nodenext",
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["./src/**/*", "./__tests__/**/*"]
 }

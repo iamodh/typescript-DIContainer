@@ -1,6 +1,8 @@
 import { Random } from '@woowacourse/mission-utils';
-import LottoConfig from '../../configs/LottoConfig.js';
+import LottoConfig from '../configs/LottoConfig.js';
+import { Injectable } from '../../../DIContainer.js';
 
+@Injectable()
 class RandomStrategy {
   #lottoConfig: LottoConfig;
   constructor(lottoConfig: LottoConfig) {

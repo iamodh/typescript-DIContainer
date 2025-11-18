@@ -2,7 +2,7 @@ import {
   ERROR_MESSAGES,
   getInvalidCountMessage,
 } from '../../constants/errorMessages.js';
-import LottoConfig from '../configs/LottoConfig.js';
+import LottoConfig from '../services/configs/LottoConfig.js';
 import Lotto from './Lotto.js';
 
 class WinningLotto {

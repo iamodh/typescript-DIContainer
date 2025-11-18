@@ -1,3 +1,5 @@
+import { Injectable } from '../../../DIContainer.js';
+
 interface LottoConfigOptions {
   readonly PRICE: number;
   readonly NUMBER_RANGE_FROM: number;
@@ -12,6 +14,7 @@ const DEFAULT_LOTTO_CONFIG: LottoConfigOptions = {
   NUMBERS_COUNT: 6,
 };
 
+@Injectable()
 class LottoConfig {
   readonly #config: LottoConfigOptions;
 

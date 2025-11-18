@@ -1,3 +1,5 @@
+import Lotto from '../../../src/models/domains/Lotto.js';
+import WinningLotto from '../../../src/models/domains/WinningLotto.js';
 import LottoChecker from '../../../src/models/services/LottoChecker.js';
 
 describe('로또 확인자 클래스 테스트', () => {
@@ -19,7 +21,10 @@ describe('로또 확인자 클래스 테스트', () => {
       .mockReturnValueOnce('FOURTH')
       .mockReturnValueOnce('FIFTH');
 
-    const stats = lottoChecker.calculateStats(fakeLottos, mockWinningLotto);
+    const stats = lottoChecker.calculateStats(
+      fakeLottos as unknown as Lotto[],
+      mockWinningLotto as unknown as WinningLotto
+    );
 
     expect(stats.get('FIRST')).toBe(0);
     expect(stats.get('FOURTH')).toBe(1);

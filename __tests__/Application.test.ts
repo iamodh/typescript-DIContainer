@@ -1,7 +1,7 @@
 import App from '../src/App.js';
 import { getLogSpy, mockQuestions, mockRandoms } from '../src/utils/mocks.js';
 
-const runException = async (input) => {
+const runException = async (input: string) => {
   // given
   const logSpy = getLogSpy();
 
@@ -24,7 +24,7 @@ describe('로또 테스트', () => {
     vi.restoreAllMocks();
   });
 
-  test('배포 버전 기능 테스트', async () => {
+  test('기능 테스트', async () => {
     // given
     const logSpy = getLogSpy();
 
@@ -70,32 +70,5 @@ describe('로또 테스트', () => {
 
   test('예외 테스트', async () => {
     await runException('1000j');
-  });
-
-  test('개발 버전 기능 테스트', async () => {
-    const logSpy = getLogSpy();
-
-    mockQuestions(['2000', '1,2,3,4,5,6', '7']);
-
-    // when
-    const app = new App();
-    await app.run('dev');
-
-    // then
-    const logs = [
-      '2개를 구매했습니다.',
-      '[1, 2, 3, 4, 5, 6]',
-      '[1, 2, 3, 4, 5, 6]',
-      '3개 일치 (5,000원) - 0개',
-      '4개 일치 (50,000원) - 0개',
-      '5개 일치 (1,500,000원) - 0개',
-      '5개 일치, 보너스 볼 일치 (30,000,000원) - 0개',
-      '6개 일치 (2,000,000,000원) - 2개',
-      '총 수익률은 200,000,000%입니다.',
-    ];
-
-    logs.forEach((log) => {
-      expect(logSpy).toHaveBeenCalledWith(expect.stringContaining(log));
-    });
   });
 });

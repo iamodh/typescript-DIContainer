@@ -1,4 +1,5 @@
-import { Rank } from '../../types/types.js';
+import { Injectable } from '../../../DIContainer.js';
+import { Rank } from '../../../types/types.js';
 
 interface IPrizeConfig {
   FIRST: number;
@@ -8,6 +9,7 @@ interface IPrizeConfig {
   FIFTH: number;
 }
 
+@Injectable()
 class PrizeConfig {
   #config: IPrizeConfig;
 

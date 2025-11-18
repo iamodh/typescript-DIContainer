@@ -1,15 +1,13 @@
 import LottoController from './controllers/LottoController.js';
 import DIContainer from './DIContainer.js';
-import LottoConfig from './models/configs/LottoConfig.js';
-import PrizeConfig from './models/configs/PrizeConfig.js';
-import LottoMachine from './models/domains/LottoMachine.js';
-import FIXED_NUMBERS from './constants/fixedNumbers.js';
-import FixedStrategy from './models/domains/strategies/FixedStrategy.js';
-import RandomStrategy from './models/domains/strategies/RandomStrategy.js';
+import LottoConfig from './models/services/configs/LottoConfig.js';
+import PrizeConfig from './models/services/configs/PrizeConfig.js';
+import LottoMachine from './models/services/LottoMachine.js';
+import FixedStrategy from './models/services/strategies/FixedStrategy.js';
+import RandomStrategy from './models/services/strategies/RandomStrategy.js';
 import LottoChecker from './models/services/LottoChecker.js';
 import InputView from './views/InputView.js';
 import OutputView from './views/OutputView.js';
-import { Env } from './types/types.js';
 
 class App {
   #container: DIContainer;
@@ -17,50 +15,26 @@ class App {
   constructor() {
     this.#container = new DIContainer();
   }
-  async run(env: Env) {
-    this.#injectDependencies(env);
-    const controller = this.#container.resolve(
-      'lottoController'
-    ) as LottoController;
+  async run() {
+    this.#injectDependencies();
+    const controller = this.#container.resolve(LottoController);
     await controller.start();
   }
 
-  #injectDependencies(env: Env) {
+  #injectDependencies() {
     const container = this.#container;
 
-    container.register('lottoConfig', LottoConfig, 'singleton');
-    container.register('prizeConfig', PrizeConfig, 'singleton');
+    container.register(LottoConfig, 'singleton');
+    container.register(PrizeConfig, 'singleton');
 
-    container.register('inputView', InputView, 'singleton', ['lottoConfig']);
-    container.register('outputView', OutputView, 'singleton', ['prizeConfig']);
+    container.register(InputView, 'singleton');
+    container.register(OutputView, 'singleton');
 
-    if (env === 'dev') {
-      container.register('fixedStrategy', FixedStrategy, 'singleton', [
-        FIXED_NUMBERS,
-      ]);
-      container.register('lottoMachine', LottoMachine, 'transient', [
-        'lottoConfig',
-        'fixedStrategy',
-      ]);
-    } else {
-      container.register('randomStrategy', RandomStrategy, 'singleton', [
-        'lottoConfig',
-      ]);
-      container.register('lottoMachine', LottoMachine, 'transient', [
-        'lottoConfig',
-        'randomStrategy',
-      ]);
-    }
+    container.register(RandomStrategy, 'singleton');
+    container.register(LottoMachine, 'transient');
 
-    container.register('lottoChecker', LottoChecker, 'singleton');
-    container.register('lottoController', LottoController, 'transient', [
-      'lottoConfig',
-      'prizeConfig',
-      'inputView',
-      'outputView',
-      'lottoMachine',
-      'lottoChecker',
-    ]);
+    container.register(LottoChecker, 'singleton');
+    container.register(LottoController, 'transient');
   }
 }
 

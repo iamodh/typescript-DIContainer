@@ -1,4 +1,4 @@
-import FixedStrategy from '../../../../src/models/domains/strategies/FixedStrategy.js';
+import FixedStrategy from '../../../../src/models/services/strategies/FixedStrategy.js';
 
 describe('고정 전략 클래스 테스트', () => {
   test('전달된 배열과 같은 고정된 번호를 생성한다.', () => {

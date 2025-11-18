@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "node built/index.js",
+    "start": "node built/src/index.js",
     "test": "vitest"
   },
   "devDependencies": {
@@ -13,7 +13,8 @@
     "vitest": "^4.0.9"
   },
   "dependencies": {
-    "@woowacourse/mission-utils": "^2.2.0"
+    "@woowacourse/mission-utils": "^2.2.0",
+    "reflect-metadata": "^0.2.2"
   },
   "engines": {
     "npm": ">=10.8.2",

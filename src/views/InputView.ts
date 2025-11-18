@@ -4,8 +4,10 @@ import {
   getInvalidPricaMessage,
   getNumberNotInRangeMessage,
 } from '../constants/errorMessages.js';
-import LottoConfig from '../models/configs/LottoConfig.js';
+import LottoConfig from '../models/services/configs/LottoConfig.js';
+import { Injectable } from '../DIContainer.js';
 
+@Injectable()
 class InputView {
   #lottoConfig: LottoConfig;
 

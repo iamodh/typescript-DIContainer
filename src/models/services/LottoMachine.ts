@@ -1,11 +1,13 @@
-import LottoConfig from '../configs/LottoConfig.js';
-import Lotto from './Lotto.js';
-import NumbersGenerator from './strategies/NumbersGenerator.js';
+import { Injectable } from '../../DIContainer.js';
+import LottoConfig from './configs/LottoConfig.js';
+import Lotto from '../domains/Lotto.js';
+import RandomStrategy from './strategies/RandomStrategy.js';
 
+@Injectable()
 class LottoMachine {
   #lottoConfig: LottoConfig;
-  #numbersGenerator: NumbersGenerator;
-  constructor(lottoConfig: LottoConfig, numbersGenerator: NumbersGenerator) {
+  #numbersGenerator: RandomStrategy;
+  constructor(lottoConfig: LottoConfig, numbersGenerator: RandomStrategy) {
     this.#lottoConfig = lottoConfig;
     this.#numbersGenerator = numbersGenerator;
   }
