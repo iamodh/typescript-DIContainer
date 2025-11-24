@@ -26,7 +26,7 @@ npm run start
 - 구현한 DI 컨테이너가 메타데이터에서 추상 클래스를 구분하는 기능을 지원하지 않기 때문에 LottoMachine에서 전략 패턴 변경 기능을 구현할 수 없었음.
 
 ## 자바스크립트 의존성 등록과의 비교
-### 자바스크립트 App
+js
 ```js
 class App {
   #container;
@@ -71,7 +71,7 @@ class App {
   }
 }
 ```
-### 타입스크립트 App
+ts
 ```ts
 class App {
   #container: DIContainer;
@@ -107,32 +107,67 @@ class App {
 > -  App이 Controller와 같이 많은 개수의 의존성를 사용하는 클라이언트의 설계도를 알 필요가 없음. DI 컨테이너의 도입으로 한 줄의 코드로 처리.
 > -  프로젝트 규모가 커질수록 DI 컨테이너의 활용도는 상승.
 
-## DIContainer 구현
-
-### Javscript 코드
+## Javscript DIContainer와의 비교
+### register 메서드
+js
 ```js
-class DIContainer {
-  #services = new Map();
+register(serviceName, serviceDefinition, scope = 'transient', args = []) {
+  this.#services.set(serviceName, {
+    serviceDefinition,
+    scope,
+    args,
+    instance: null,
+  });
+}
+```
+ts
+```ts
+type ContainerScope = 'transient' | 'singleton';
+type Constructor<T> = new (...args: any[]) => T;
+type ServiceArg = unknown;
 
-  register(serviceName, serviceDefinition, scope = 'transient', args = []) {
-    this.#services.set(serviceName, {
-      serviceDefinition,
-      scope,
-      args,
-      instance: null,
-    });
+register<T>(
+  target: Constructor<T>,
+  scope: ContainerScope = 'transient',
+  args: ServiceArg[] = []
+) {
+  this.#services.set(target, {
+    scope,
+    args,
+    instance: null,
+  });
+}
+```
+
+> - 기존 string 값으로 등록하던 클래스를 제네릭을 사용하여 클래스 타입으로 등록
+>   - 오타 발생 위험 감소, 코드 간소화
+### resolve 메서드
+js
+```js
+resolve(serviceName) {
+  const service = this.#services.get(serviceName);
+
+  if (!service) {
+    throw new Error(`[ERROR] ${serviceName}이 존재하지 않습니다.`);
   }
 
-  resolve(serviceName) {
-    const service = this.#services.get(serviceName);
+  if (service.scope === 'transient') {
+    const resolved = [];
 
-    if (!service) {
-      throw new Error(`[ERROR] ${serviceName}이 존재하지 않습니다.`);
-    }
+    service.args.map((arg) => {
+      if (this.#services.has(arg)) {
+        resolved.push(this.resolve(arg));
+      } else {
+        resolved.push(arg);
+      }
+    });
 
-    if (service.scope === 'transient') {
+    return new service.serviceDefinition(...resolved);
+  }
+
+  if (service.scope === 'singleton') {
+    if (!service.instance) {
       const resolved = [];
-
       service.args.map((arg) => {
         if (this.#services.has(arg)) {
           resolved.push(this.resolve(arg));
@@ -141,129 +176,88 @@ class DIContainer {
         }
       });
 
-      return new service.serviceDefinition(...resolved);
+      service.instance = new service.serviceDefinition(...resolved);
     }
-
-    if (service.scope === 'singleton') {
-      if (!service.instance) {
-        const resolved = [];
-        service.args.map((arg) => {
-          if (this.#services.has(arg)) {
-            resolved.push(this.resolve(arg));
-          } else {
-            resolved.push(arg);
-          }
-        });
-
-        service.instance = new service.serviceDefinition(...resolved);
-      }
-      return service.instance;
-    }
-  }
-
-  hasService(serviceName) {
-    return this.#services.has(serviceName);
+    return service.instance;
   }
 }
 
-export default DIContainer;
+hasService(serviceName) {
+  return this.#services.has(serviceName);
+}
+}
 ```
-### Typescript 코드
+ts
 ```ts
-import 'reflect-metadata';
+resolve<T>(target: Constructor<T>) {
+  const service = this.#services.get(target);
 
-type ContainerScope = 'transient' | 'singleton';
-type Constructor<T> = new (...args: any[]) => T;
-type ServiceArg = unknown;
-
-interface ServiceData {
-  scope: ContainerScope;
-  args: ServiceArg[];
-  instance: unknown | null;
-}
-
-class DIContainer {
-  #services = new Map<Constructor<any>, ServiceData>();
-
-  register<T>(
-    target: Constructor<T>,
-    scope: ContainerScope = 'transient',
-    args: ServiceArg[] = []
-  ) {
-    this.#services.set(target, {
-      scope,
-      args,
-      instance: null,
-    });
+  if (!service) {
+    throw new Error(`[ERROR] ${target.name}이 존재하지 않습니다.`);
   }
 
-  resolve<T>(target: Constructor<T>) {
-    const service = this.#services.get(target);
+  if (service.scope === 'transient') {
+    const dependencies = this.resolveDependencies(target);
 
-    if (!service) {
-      throw new Error(`[ERROR] ${target.name}이 존재하지 않습니다.`);
-    }
+    const instance = new target(...dependencies);
 
-    if (service.scope === 'transient') {
+    return instance;
+  }
+
+  if (service.scope === 'singleton') {
+    if (!service.instance) {
       const dependencies = this.resolveDependencies(target);
 
-      const instance = new target(...dependencies);
-
-      return instance;
+      service.instance = new target(...dependencies);
     }
-
-    if (service.scope === 'singleton') {
-      if (!service.instance) {
-        const dependencies = this.resolveDependencies(target);
-
-        service.instance = new target(...dependencies);
-      }
-      return service.instance;
-    }
-  }
-
-  private resolveDependencies<T>(target: Constructor<T>) {
-    const service = this.#services.get(target);
-    const registeredArgs = [...service.args];
-
-    const paramTypes: Constructor<any>[] = Reflect.getMetadata(
-      'design:paramtypes',
-      target
-    );
-
-    const dependencies = (paramTypes || []).map((paramType) => {
-      if (!paramType) {
-        throw new Error(
-          `[ERROR] ${target.name}의 의존성을 인스턴스화할 수 없습니다.`
-        );
-      }
-
-      if (this.#services.has(paramType)) {
-        return this.resolve(paramType);
-      }
-
-      // 의존성이 Object(원시 값)인 경우
-      if (paramType.name === 'Object') {
-        if (registeredArgs.length > 0) {
-          return registeredArgs.shift();
-        }
-        return undefined;
-      }
-    });
-
-    return dependencies;
-  }
-
-  hasService(target: Constructor<any>) {
-    return this.#services.has(target);
+    return service.instance;
   }
 }
 
+private resolveDependencies<T>(target: Constructor<T>) {
+  const service = this.#services.get(target);
+  const registeredArgs = [...service.args];
+
+  const paramTypes: Constructor<any>[] = Reflect.getMetadata(
+    'design:paramtypes',
+    target
+  );
+
+  const dependencies = (paramTypes || []).map((paramType) => {
+    if (!paramType) {
+      throw new Error(
+        `[ERROR] ${target.name}의 의존성을 인스턴스화할 수 없습니다.`
+      );
+    }
+
+    if (this.#services.has(paramType)) {
+      return this.resolve(paramType);
+    }
+
+    // 의존성이 Object(원시 값)인 경우
+    if (paramType.name === 'Object') {
+      if (registeredArgs.length > 0) {
+        return registeredArgs.shift();
+      }
+      return undefined;
+    }
+  });
+
+  return dependencies;
+}
+```
+
+> - string 배열의 의존성 목록을 확인하는 방법에서 Reflect에 저장된 paramTypes를 활용하도록 변경
+>   - register시 의존성 배열 목록 전달 불필요
+> - 클래스 생성자에 원시값이 등록된 경우 조건문 통해 의존성 인스턴스 생성 생략
+
+### Injectable 데코레이터
+
+```ts
 export function Injectable(): ClassDecorator {
   return function (target: Function) {
-    // 클래스에 해당 데코레이터를 붙이면 emitDecoratorMetadata 설정에 의해 자동으로 reflect-metadata 폴리필이 실행됨.
+   
   };
 }
-
-export default DIContainer;
 ```
+>  클래스에 해당 데코레이터를 붙이면 emitDecoratorMetadata 설정에 의해 자동으로 reflect-metadata 폴리필이 실행됨.
