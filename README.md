@@ -6,6 +6,11 @@ Typescript의 Generic, Decorator 기능과 reflect-metadata를 사용하여 의�
 - vitest: Typesciprt로 작성된 테스트 파일을 babel의 도움 없이 ESM Javascript 컴파일을 지원하기 때문에 사용.
 - typescript: emitDecoratorMetadata 옵션을 통한 런타임 메타데이터 접근과 Generic을 활용한 Class 타입 생성을 위해 사용.
 
+
+## 한계
+- vitest의 esbuild 컴파일러는 emitDecoratorMetadata를 지원하지 않기 때문에 ApplicationTest와 DIContainer 클래스에 대한 테스트를 진행할 수 없었음.
+- 구현한 DI 컨테이너가 메타데이터에서 추상 클래스를 구분하는 기능을 지원하지 않기 때문에 LottoMachine에서 전략 패턴 변경 기능을 구현할 수 없었음.
+
 ## 자바스크립트 의존성 등록과의 비교
 ### 자바스크립트 App
 ```js
@@ -248,6 +253,3 @@ export function Injectable(): ClassDecorator {
 
 export default DIContainer;
 ```
-## 한계
-- vitest의 esbuild 컴파일러는 emitDecoratorMetadata를 지원하지 않기 때문에 DIContainer 클래스에 대한 테스트를 진행할 수 없었음.
-- 구현한 DI 컨테이너가 메타데이터에서 추상 클래스를 구분하는 기능을 지원하지 않기 때문에 LottoMachine에서 전략 패턴 변경 기능을 구현할 수 없었음.
