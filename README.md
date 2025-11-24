@@ -1,6 +1,6 @@
 # Typescript Di Container
 
-Typescript의 Generic, Decorator 기능과 reflect-metadata를 사용하여 의존성 주입 자동화.
+Typescript의 Generic, Decorator 기능과 reflect-metadata를 사용하여 의존성 등록 자동화.
 
 ## 실행 방법
 ```cli
