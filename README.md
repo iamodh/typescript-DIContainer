@@ -2,6 +2,20 @@
 
 Typescript의 Generic, Decorator 기능과 reflect-metadata를 사용하여 의존성 주입 자동화.
 
+## 실행 방법
+```cli
+의존성 설치
+npm i
+
+테스트
+npm run test
+
+컴파일
+npm run build
+
+실행
+npm run start
+```
 ## 사용 기술
 - vitest: Typesciprt로 작성된 테스트 파일을 babel의 도움 없이 ESM Javascript 컴파일을 지원하기 때문에 사용.
 - typescript: emitDecoratorMetadata 옵션을 통한 런타임 메타데이터 접근과 Generic을 활용한 Class 타입 생성을 위해 사용.
